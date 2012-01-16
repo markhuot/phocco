@@ -32,7 +32,7 @@
  */
 
 /**
-* Get all files matching the pattern
+* Loop over an array of files generating documentation for each file.
 */
 function generate_documentation_for_files($files) {
 	foreach ($files as $file) {
@@ -41,9 +41,10 @@ function generate_documentation_for_files($files) {
 }
 
 /**
- * Generates documentation for the specified file pattern.
+ * Generates documentation for a single file.
+ * This function also accepts a list of files to generate the page switcher.
  */
-function generate_documentation_for_file($file, $files) {
+function generate_documentation_for_file($file, $files=array()) {
 	$source = file_get_contents($file);
 	$sections = parse($source);
 	render($file, $sections, $files);
@@ -98,13 +99,19 @@ function render($file, $sections, $files) {
 	$basename = basename($file);
 	$extension = preg_replace('/^.*\.(.*)$/', '$1', $basename);
 
-	$src = '<!DOCTYPE html><html><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><title>'.$basename.'</title><link rel="stylesheet" href="http://jashkenas.github.com/docco/resources/docco.css"><script src="http://code.jquery.com/jquery-1.7.1.min.js"></script><script src="https://raw.github.com/coreyti/showdown/master/src/showdown.js"></script><link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet" /><!--script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"--></script><link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" /><style type="text/css">.syntaxhighlighter,.syntaxhighlighter .line.alt1,.syntaxhighlighter .line.alt2{background:none !important;} td.code td.code {padding:0;border:none;}</style></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page">';
+	$src = '<!DOCTYPE html><html><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><title>'.$basename.'</title><link rel="stylesheet" href="docco.css"><script src="http://code.jquery.com/jquery-1.7.1.min.js"></script><script src="https://raw.github.com/coreyti/showdown/master/src/showdown.js"></script><link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet" /><!--script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"--></script><link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" /><style type="text/css">.syntaxhighlighter,.syntaxhighlighter .line.alt1,.syntaxhighlighter .line.alt2{background:none !important;} td.code td.code {padding:0;border:none;}</style></head><body><div id="container"><div id="background"></div>';
 
-	foreach ($files as $file) {
-		$src.= '<a class="source" href="'.basename($file).'.html">'.basename(($file)).'</a>';
+	if (count($files) > 1) {
+		$src.= '<div id="jump_to"><a id="jump_handle" href="#">Jump To &hellip;</a><div id="jump_wrapper"><div id="jump_page">';
+
+		foreach ($files as $file) {
+			$src.= '<a class="source" href="'.basename($file).'.html">'.basename(($file)).'</a>';
+		}
+
+		$src.= '</div></div></div>';
 	}
 
-	$src.= '</div></div></div><table cellspacing=0 cellpadding=0><thead><tr><th class=docs><h1>'.$basename.'</h1></th><th class=code></th></tr></thead><tbody>';
+	$src.= '<table cellspacing=0 cellpadding=0><thead><tr><th class=docs><h1>'.$basename.'</h1></th><th class=code></th></tr></thead><tbody>';
 
 	foreach ($sections as $count => $section) {
 		$src.= '<tr id="section-'.$count.'"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-'.$count.'">&#182;</a></div><div class="doc">';
@@ -114,7 +121,7 @@ function render($file, $sections, $files) {
 		$src.= '</pre></div></td></tr>';
 	}
 
-	$src.= '</table></div><script>converter = new Showdown.converter();$(".doc").each(function() { $(this).html(converter.makeHtml($(this).text())); });</script><script src="https://raw.github.com/alexgorbatchev/SyntaxHighlighter/master/scripts/XRegExp.js"></script><script src="https://raw.github.com/alexgorbatchev/SyntaxHighlighter/master/scripts/shCore.js" type="text/javascript"></script><script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script><script type="text/javascript">
+	$src.= '</table></div><script>converter = new Showdown.converter();$(".doc").each(function() { $(this).html(converter.makeHtml($(this).text())); }); $("#jump_handle").click(function(e){ $("#jump_wrapper").toggle(); e.preventDefault(); }); </script><script src="https://raw.github.com/alexgorbatchev/SyntaxHighlighter/master/scripts/XRegExp.js"></script><script src="https://raw.github.com/alexgorbatchev/SyntaxHighlighter/master/scripts/shCore.js" type="text/javascript"></script><script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script><script type="text/javascript">
 function path()
 {
   var args = arguments,
@@ -158,7 +165,12 @@ SyntaxHighlighter.defaults["unindent"] = false;
 SyntaxHighlighter.all();
 	</script></body>';
 
-	file_put_contents('/Users/lmandilian/Desktop/'.$basename.'.html', $src);
+	$docs = rtrim(getcwd(), '/').'/docs/';
+	if (!is_dir($docs)) {
+		mkdir($docs);
+	}
+
+	file_put_contents($docs.$basename.'.html', $src);
 }
 
 generate_documentation_for_files(array_slice($argv, 1));
