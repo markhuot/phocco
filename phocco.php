@@ -26,7 +26,7 @@
  * Once installed, the `phocco` command can be used to generate documentation
  * for a set of source files:
  * 
- *     php phocco lib/*.rb
+ *     php phocco lib/*.php
  * 
  * The HTML files are written to the current working directory.
  */
@@ -41,8 +41,8 @@ function generate_documentation_for_files($files) {
 }
 
 /**
- * Generates documentation for a single file.
- * This function also accepts a list of files to generate the page switcher.
+ * Generates documentation for a single file. This function also accepts a
+ * list of files to generate the page switcher.
  */
 function generate_documentation_for_file($file, $files=array()) {
 	$source = file_get_contents($file);
@@ -50,6 +50,12 @@ function generate_documentation_for_file($file, $files=array()) {
 	render($file, $sections, $files);
 }
 
+/**
+ * Parse the source code into sections. A section is simply an array with the
+ * first index being the comment and the second index being the code. This
+ * should work with most languages since we're not looking for anything
+ * specific.
+ */
 function parse($source) {
 	$sections = $doc = $code = array();
 	$lines = preg_split('/\n+/', $source);
