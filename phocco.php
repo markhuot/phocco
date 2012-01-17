@@ -99,10 +99,10 @@ function render($file, $sections, $files) {
 	$basename = basename($file);
 	$extension = preg_replace('/^.*\.(.*)$/', '$1', $basename);
 
-	$src = '<!DOCTYPE html><html><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><title>'.$basename.'</title><link rel="stylesheet" href="docco.css"><script src="http://code.jquery.com/jquery-1.7.1.min.js"></script><script src="https://raw.github.com/coreyti/showdown/master/src/showdown.js"></script><link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet" /><!--script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"--></script><link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" /><style type="text/css">.syntaxhighlighter,.syntaxhighlighter .line.alt1,.syntaxhighlighter .line.alt2{background:none !important;} td.code td.code {padding:0;border:none;}</style></head><body><div id="container"><div id="background"></div>';
+	$src = '<!DOCTYPE html><html><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><title>'.$basename.'</title><link rel="stylesheet" href="phocco.css"><script src="http://code.jquery.com/jquery-1.7.1.min.js"></script><script src="showdown.js"></script><link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet" /><!--script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"--></script><link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" /><style type="text/css">.syntaxhighlighter,.syntaxhighlighter .line.alt1,.syntaxhighlighter .line.alt2{background:none !important;} td.code td.code {padding:0;border:none;}</style></head><body><div id="container"><div id="background"></div>';
 
 	if (count($files) > 1) {
-		$src.= '<div id="jump_to"><a id="jump_handle" href="#">Jump To &hellip;</a><div id="jump_wrapper"><div id="jump_page">';
+		$src.= '<div id="jump_to"><a id="jump_handle" href="#">Jump&nbsp;To&hellip;</a><div id="jump_wrapper"><div id="jump_page">';
 
 		foreach ($files as $file) {
 			$src.= '<a class="source" href="'.basename($file).'.html">'.basename(($file)).'</a>';
