@@ -980,11 +980,16 @@ var _EncodeCode = function(text) {
 
 var _DoItalicsAndBold = function(text) {
 
+	/**
+	 * MARK: Added word boundaries to prevent underscores in class names from being
+	 * italiczed.
+	 */
+
 	// <strong> must go first:
-	text = text.replace(/(\*\*|__)(?=\S)([^\r]*?\S[*_]*)\1/g,
+	text = text.replace(/\b(\*\*|__)(?=\S)([^\r]*?\S[*_]*)\1\b/g,
 		"<strong>$2</strong>");
 
-	text = text.replace(/(\*|_)(?=\S)([^\r]*?\S)\1/g,
+	text = text.replace(/\b(\*|_)(?=\S)([^\r]*?\S)\1\b/g,
 		"<em>$2</em>");
 
 	return text;
