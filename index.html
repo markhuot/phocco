@@ -12,74 +12,105 @@ to build (so I could use Docco!). Docco’s gorgeous HTML and CSS are taken
 verbatim. The main difference is that Phocco is written in PHP and _has no
 dependancies_!
 
-That's right, it uses remote hosted Javascript files to parse the markdown
+That's right, it uses remotely hosted Javascript files to parse the markdown
 on the left and the syntax highlighting on the right.
 
-Install Phocco… by downloading it. It should run on just about any version
+The [source for Docco][1] is available on GitHub, and released under the MIT
+license.
+
+Install Phocco... by downloading it. It should run on just about any version
 of PHP. That means it'll work on a vanilla MAMP install or a custom PHP
 install.
 
 Once installed, the `phocco` command can be used to generate documentation
 for a set of source files:
 
-    php phocco lib/*.rb
+    php phocco lib/*.php
 
 The HTML files are written to the current working directory.
- </div></td><td class="code"><div class="highlight"><pre class="brush: php"></pre></div></td></tr><tr id="section-1"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-1">&#182;</a></div><div class="doc">
+
+[1]:http://markhuot.github.com/phocco/
+</div></td><td class="code"><div class="highlight"><pre class="brush: php"></pre></div></td></tr><tr id="section-1"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-1">&#182;</a></div><div class="doc">
 Loop over an array of files generating documentation for each file.
 </div></td><td class="code"><div class="highlight"><pre class="brush: php">function generate_documentation_for_files($files) {
 	foreach ($files as $file) {
 		generate_documentation_for_file(realpath($file), $files);
 	}
 }</pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-2">&#182;</a></div><div class="doc">
-Generates documentation for a single file.
-This function also accepts a list of files to generate the page switcher.
- </div></td><td class="code"><div class="highlight"><pre class="brush: php">function generate_documentation_for_file($file, $files=array()) {
+Generates documentation for a single file. This function also accepts a
+list of files to generate the page switcher.
+</div></td><td class="code"><div class="highlight"><pre class="brush: php">function generate_documentation_for_file($file, $files=array()) {
 	$source = file_get_contents($file);
 	$sections = parse($source);
 	render($file, $sections, $files);
-}
-function parse($source) {
+}</pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-3">&#182;</a></div><div class="doc">
+## Parsing
+
+Parse the source code into sections. A section is simply an array with the
+first index being the comment and the second index being the code. This
+should work with most languages since we're not looking for anything
+specific to PHP.
+</div></td><td class="code"><div class="highlight"><pre class="brush: php">function parse($source) {
 	$sections = $doc = $code = array();
-	$lines = preg_split('/\n+/', $source);
-	if (preg_match('/^\#\!/', $lines[0])) {
+	$lines = preg_split('/\n+/', $source);</pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-4">&#182;</a></div><div class="doc"> If the first line is a shebang or opening PHP tag the strip it out.
+ Yea, not everyone will agree with this but it's not totally relevant to
+ the docs and it prevents comments from appearing at the top of the docs.</div></td><td class="code"><div class="highlight"><pre class="brush: php">	if (preg_match('/^\#\!/', $lines[0])) {
 		array_shift($lines);
 	}
 	if (preg_match('/^\s*&lt;\?php\s*$/', $lines[0])) {
 		array_shift($lines);
-	}
-	$in_comment = FALSE;
-	foreach ($lines as $line) {
-		if ($in_comment &amp;&amp; preg_match('/\*\/\s*$/', $line)) {
-			$in_comment = FALSE;
-			$doc[] = preg_replace('/\*\/\s*$/', '', $line);
-		}
-		else if ($in_comment) {
-			$doc[] = preg_replace('/\s*\*\s/', '', $line);
-		}
-		else if (preg_match('/^\s*\/\*\*/', $line)) {
+	}</pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-5">&#182;</a></div><div class="doc"> Store state as we loop through the lines. We need to know if the last
+ line was a single (`_s`) or multiline (`_m`) comment so we know what to do with the
+ current line.</div></td><td class="code"><div class="highlight"><pre class="brush: php">	$in_comment_s = FALSE;
+	$in_comment_m = FALSE;</pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-6">&#182;</a></div><div class="doc"> Loop over each line.
+ Of note here is that each condition inside this causes the loop to
+ continue to the next line. If none of the conditions are met we
+ assume the content is code and dump it into the code half.</div></td><td class="code"><div class="highlight"><pre class="brush: php">	foreach ($lines as $line) {</pre></div></td></tr><tr id="section-7"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-7">&#182;</a></div><div class="doc"> Are we ending a multiline comment? If so, add the line to the
+ documentation half and close out the comment variable.</div></td><td class="code"><div class="highlight"><pre class="brush: php">		if ($in_comment_m &amp;&amp; preg_match('/^\s*\*\/\s*$/', $line)) {
+			$doc[] = preg_replace('/^\s*\*\/\s*$/', '', $line);
+			$in_comment_m = FALSE;
+			$in_comment_s = FALSE;
+			continue;
+		}</pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-8">&#182;</a></div><div class="doc"> Are we in a multiline comment? If so, add the line to the
+ documentation half.</div></td><td class="code"><div class="highlight"><pre class="brush: php">		if ($in_comment_m) {
+			$doc[] = preg_replace('/^\s*\*\s?/', '', $line);
+			$in_comment_s = FALSE;
+			continue;
+		}</pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-9">&#182;</a></div><div class="doc"> Are we starting a multiline comment? If so, start a new section by
+ appending the current buffer of `$code` and `$doc` to sections. Then
+ reset everything and start a new section.</div></td><td class="code"><div class="highlight"><pre class="brush: php">		if (preg_match('/^\s*\/\*\*/', $line)) {
 			if ($doc || $code) {
 				$sections[] = array(implode(&quot;\n&quot;, $doc), implode(&quot;\n&quot;, $code));
 				$doc = $code = array();
 			}
-			$in_comment = TRUE;
 			$doc[] = preg_replace('/^\s*\/\*\*/', '', $line);
+			$in_comment_m = TRUE;
+			$in_comment_s = FALSE;
+			continue;
 		}
-		else if (preg_match('/^\s*\/\//', $line)) {
-			if ($doc || $code) {
+		</pre></div></td></tr><tr id="section-10"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-10">&#182;</a></div><div class="doc"> Are we in a single line comment? If we are then we'll add this line
+ to the doc half. If we're following code then start a new section.
+ If we're following a single line comment then just add it as a
+ continuation of the last comment.</div></td><td class="code"><div class="highlight"><pre class="brush: php">		if (preg_match('/^\s*\/\//', $line)) {
+			if (!$in_comment_s &amp;&amp; ($doc || $code)) {
 				$sections[] = array(implode(&quot;\n&quot;, $doc), implode(&quot;\n&quot;, $code));
 				$doc = $code = array();
 			}
 			$doc[] = preg_replace('/^\s*\/\//', '', $line);
+			$in_comment_s = TRUE;
+			continue;
 		}
-		else {
-			$code[] = $line;
-		}
-	}
-	$sections[] = array(implode(&quot;\n&quot;, $doc), implode(&quot;\n&quot;, $code));
-	return $sections;
-}
-function render($file, $sections, $files) {
+		</pre></div></td></tr><tr id="section-11"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-11">&#182;</a></div><div class="doc"> If we got here then we're not in any comments and we should just
+ add the line to the code half.</div></td><td class="code"><div class="highlight"><pre class="brush: php">		$code[] = $line;
+		$in_comment_s = FALSE;
+	}</pre></div></td></tr><tr id="section-12"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-12">&#182;</a></div><div class="doc"> Add the final buffer into the sections array.</div></td><td class="code"><div class="highlight"><pre class="brush: php">	$sections[] = array(implode(&quot;\n&quot;, $doc), implode(&quot;\n&quot;, $code));</pre></div></td></tr><tr id="section-13"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-13">&#182;</a></div><div class="doc"> Give back.</div></td><td class="code"><div class="highlight"><pre class="brush: php">	return $sections;
+}</pre></div></td></tr><tr id="section-14"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-14">&#182;</a></div><div class="doc">
+## Rendering
+
+This is messy and not fun. It has inline HTML and a mess of other junk.
+Normally this would be split out into separate view files, but keeping
+__Phocco__ to one file is more important.
+</div></td><td class="code"><div class="highlight"><pre class="brush: php">function render($file, $sections, $files) {
 	$basename = basename($file);
 	$extension = preg_replace('/^.*\.(.*)$/', '$1', $basename);
 	$src = '&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;&lt;title&gt;'.$basename.'&lt;/title&gt;&lt;link rel=&quot;stylesheet&quot; href=&quot;http://markhuot.github.com/phocco/resources/phocco.css&quot;&gt;&lt;script src=&quot;http://code.jquery.com/jquery-1.7.1.min.js&quot;&gt;&lt;/script&gt;&lt;script src=&quot;http://markhuot.github.com/phocco/resources/showdown.js&quot;&gt;&lt;/script&gt;&lt;link href=&quot;http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot; /&gt;&lt;!--script type=&quot;text/javascript&quot; src=&quot;http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js&quot;--&gt;&lt;/script&gt;&lt;link href=&quot;http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;.syntaxhighlighter,.syntaxhighlighter .line.alt1,.syntaxhighlighter .line.alt2{background:none !important;} td.code td.code {padding:0;border:none;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div id=&quot;container&quot;&gt;&lt;div id=&quot;background&quot;&gt;&lt;/div&gt;';
