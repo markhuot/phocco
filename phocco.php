@@ -16,10 +16,13 @@
  * verbatim. The main difference is that Phocco is written in PHP and _has no
  * dependancies_!
  * 
- * That's right, it uses remote hosted Javascript files to parse the markdown
+ * That's right, it uses remotely hosted Javascript files to parse the markdown
  * on the left and the syntax highlighting on the right.
  * 
- * Install Phocco… by downloading it. It should run on just about any version
+ * The [source for Docco][1] is available on GitHub, and released under the MIT
+ * license.
+ * 
+ * Install Phocco... by downloading it. It should run on just about any version
  * of PHP. That means it'll work on a vanilla MAMP install or a custom PHP
  * install.
  * 
@@ -29,6 +32,8 @@
  *     php phocco lib/*.php
  * 
  * The HTML files are written to the current working directory.
+ * 
+ * [1]:http://markhuot.github.com/phocco/
  */
 
 /**
@@ -51,15 +56,20 @@ function generate_documentation_for_file($file, $files=array()) {
 }
 
 /**
+ * ## Parsing
+ *
  * Parse the source code into sections. A section is simply an array with the
  * first index being the comment and the second index being the code. This
  * should work with most languages since we're not looking for anything
- * specific.
+ * specific to PHP.
  */
 function parse($source) {
 	$sections = $doc = $code = array();
 	$lines = preg_split('/\n+/', $source);
 
+	// If the first line is a shebang or opening PHP tag the strip it out.
+	// Yea, not everyone will agree with this but it's not totally relevant to
+	// the docs and it prevents comments from appearing at the top of the docs.
 	if (preg_match('/^\#\!/', $lines[0])) {
 		array_shift($lines);
 	}
@@ -68,39 +78,83 @@ function parse($source) {
 		array_shift($lines);
 	}
 
-	$in_comment = FALSE;
+	// Store state as we loop through the lines. We need to know if the last
+	// line was a single (`_s`) or multiline (`_m`) comment so we know what to do with the
+	// current line.
+	$in_comment_s = FALSE;
+	$in_comment_m = FALSE;
+
+	// Loop over each line.
+	// Of note here is that each condition inside this causes the loop to
+	// continue to the next line. If none of the conditions are met we
+	// assume the content is code and dump it into the code half.
 	foreach ($lines as $line) {
-		if ($in_comment && preg_match('/\*\/\s*$/', $line)) {
-			$in_comment = FALSE;
-			$doc[] = preg_replace('/\*\/\s*$/', '', $line);
+
+		// Are we ending a multiline comment? If so, add the line to the
+		// documentation half and close out the comment variable.
+		if ($in_comment_m && preg_match('/^\s*\*\/\s*$/', $line)) {
+			$doc[] = preg_replace('/^\s*\*\/\s*$/', '', $line);
+			$in_comment_m = FALSE;
+			$in_comment_s = FALSE;
+			continue;
 		}
-		else if ($in_comment) {
-			$doc[] = preg_replace('/\s*\*\s/', '', $line);
+
+		// Are we in a multiline comment? If so, add the line to the
+		// documentation half.
+		if ($in_comment_m) {
+			$doc[] = preg_replace('/^\s*\*\s?/', '', $line);
+			$in_comment_s = FALSE;
+			continue;
 		}
-		else if (preg_match('/^\s*\/\*\*/', $line)) {
+
+		// Are we starting a multiline comment? If so, start a new section by
+		// appending the current buffer of `$code` and `$doc` to sections. Then
+		// reset everything and start a new section.
+		if (preg_match('/^\s*\/\*\*/', $line)) {
 			if ($doc || $code) {
 				$sections[] = array(implode("\n", $doc), implode("\n", $code));
 				$doc = $code = array();
 			}
-			$in_comment = TRUE;
 			$doc[] = preg_replace('/^\s*\/\*\*/', '', $line);
+			$in_comment_m = TRUE;
+			$in_comment_s = FALSE;
+			continue;
 		}
-		else if (preg_match('/^\s*\/\//', $line)) {
-			if ($doc || $code) {
+		
+		// Are we in a single line comment? If we are then we'll add this line
+		// to the doc half. If we're following code then start a new section.
+		// If we're following a single line comment then just add it as a
+		// continuation of the last comment.
+		if (preg_match('/^\s*\/\//', $line)) {
+			if (!$in_comment_s && ($doc || $code)) {
 				$sections[] = array(implode("\n", $doc), implode("\n", $code));
 				$doc = $code = array();
 			}
 			$doc[] = preg_replace('/^\s*\/\//', '', $line);
+			$in_comment_s = TRUE;
+			continue;
 		}
-		else {
-			$code[] = $line;
-		}
+		
+		// If we got here then we're not in any comments and we should just
+		// add the line to the code half.
+		$code[] = $line;
+		$in_comment_s = FALSE;
 	}
+
+	// Add the final buffer into the sections array.
 	$sections[] = array(implode("\n", $doc), implode("\n", $code));
 
+	// Give back.
 	return $sections;
 }
 
+/**
+ * ## Rendering
+ * 
+ * This is messy and not fun. It has inline HTML and a mess of other junk.
+ * Normally this would be split out into separate view files, but keeping
+ * __Phocco__ to one file is more important.
+ */
 function render($file, $sections, $files) {
 	$basename = basename($file);
 	$extension = preg_replace('/^.*\.(.*)$/', '$1', $basename);
