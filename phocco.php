@@ -37,11 +37,26 @@
  */
 
 /**
-* Loop over an array of files generating documentation for each file.
-*/
+ * Loop over an array of files generating documentation for each file.
+ * Unfortunately users can enter any file they want here, some relative to the
+ * current working directory, others absolute. We don't know. So, we'll turn
+ * every path into a full path then down to a relative path. That way we're
+ * certain everything below is only dealing with relative paths.
+ */
 function generate_documentation_for_files($files) {
+	foreach ($files as $key => $file) {
+		$files[$key] = relative_path(getcwd(), realpath($file));
+	}
+
+	// $a = '/'.(dirname($files[2])=='.'?'':dirname($files[2]));
+	// $b = '/'.(dirname($files[0])=='.'?'':dirname($files[1]));
+	// var_dump($a);
+	// var_dump($b);
+	// var_dump(relative_path($a, $b));
+	// die;
+
 	foreach ($files as $file) {
-		generate_documentation_for_file(realpath($file), $files);
+		generate_documentation_for_file($file, $files);
 	}
 }
 
@@ -51,7 +66,7 @@ function generate_documentation_for_files($files) {
  */
 function generate_documentation_for_file($file, $files=array()) {
 	echo "Generating documentation: {$file}\n";
-	$source = file_get_contents($file);
+	$source = file_get_contents(realpath($file));
 	$sections = parse($source);
 	render($file, $sections, $files);
 }
@@ -152,20 +167,15 @@ function parse($source) {
  * Parses the sections out into HTML.
  */
 function render($file, $sections, $files) {
-
-	// var_dump(cwd_path($file));
-	// var_dump(relative_path($file));
-	// die;
-
 	$cwd = rtrim(getcwd(), '/').'/';
-	$relative_path = cwd_path($file);
-	$rendered_file = $cwd.'docs/'.$relative_path.'.html';
+	$docs = $cwd.'docs/';
+	$rendered_file = $docs.$file.'.html';
 
 	$html = view_base(array(
 		'file' => $file,
+		'docs' => $docs,
 		'display_name' => basename($file),
 		'extension' => extension($file),
-		'relative_path' => $relative_path,
 		'files' => $files,
 		'sections' => $sections
 	));
@@ -234,8 +244,13 @@ ob_start(); ?>
 		<div id="jump_wrapper">
 			<div id="jump_page">
 				<?php foreach ($files as $sibling): ?>
-					<a class="source" href="<?php echo relative_path($file, $sibling); ?>.html">
-						<?php echo cwd_path($sibling); ?>
+					<a class="source" href="[
+						<?php
+						$a = '/'.dirname($file)=='.'?'':dirname($file);
+						$b = '/'.dirname($sibling)=='.'?'':dirname($sibling);
+						echo relative_path($a, $b);
+						?>].html">
+						<?php echo $sibling; ?>
 					</a>
 				<?php endforeach ; ?>
 			</div>
@@ -385,44 +400,29 @@ function cwd_path($path) {
 	return preg_replace('/^'.preg_quote($cwd, '/').'/', '', $path);
 }
 
-function relative_path($file1, $file2=FALSE) {
-	if (!$file2) {
-		$file2 = rtrim(getcwd(), '/').'/';
+function relative_path($from, $to=FALSE, $ps=DIRECTORY_SEPARATOR) {
+	if (!$to) {
+		$to = rtrim(getcwd(), '/').'/';
 	}
 
-	if ($file1 == $file2) {
-		return basename($file1);
+	if ($from == '.') { $from = ''; }
+	if ($to == '.') { $to = ''; }
+
+	$from = explode($ps, rtrim($from, $ps));
+	$to = explode($ps, rtrim($to, $ps));
+
+	while(count($from) && count($to) && ($from[0] == $to[0]))
+	{
+		array_shift($from);
+		array_shift($to);
 	}
 
-	$path = array();
-
-	$file1_dirs = preg_split('/\//', ltrim($file1, '/'));
-	$file2_dirs = preg_split('/\//', ltrim($file2, '/'));
-
-	//print_r($file1_dirs);
-	//print_r($file2_dirs);
-	//print_r(array_diff_assoc($file1_dirs, $file2_dirs));
-
-	foreach ($file1_dirs as $key => $dir) {
-		if (!isset($file2_dirs[$key])) {
-			$path[] = '..';
-		}
-		else if ($file2_dirs[$key] !== $dir) {
-			break;
-		}
-	}
-
-	if (isset($file2_dirs[++$key])) {
-		for ($i=$key; $len=count($file2_dirs),$i<$len; $i++) {
-			$path[] = $file2_dirs[$key];
-		}
-	}
-
-	$path = implode('/', $path);
-	$path.= $path ? '/' : '';
-	return $path.basename($file2);
+	return str_pad("", count($from) * 3, '..'.$ps).implode($ps, $to);
 }
 
+/**
+ * Return the file extension of the passed file/path.
+ */
 function extension($file) {
 	return preg_replace('/^.*\.(.*)$/', '$1', $file);
 }
