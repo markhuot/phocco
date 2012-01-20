@@ -11,16 +11,16 @@
  * alongside syntax highlighted code so as to give an annotation effect. This
  * page is the result of running Phocco against its own source file.
  * 
- * Most of this was written while waiting for Ruby, Python, Node, etc… Docco
- * to build (so I could use Docco!). Docco’s gorgeous HTML and CSS are taken
+ * Most of this was written while waiting for Ruby, Python, Node, etc… to
+ * build (so I could use Docco!). Docco’s gorgeous HTML and CSS are taken
  * verbatim. The main difference is that Phocco is written in PHP and _has no
  * dependancies_!
  * 
  * That's right, it uses remotely hosted Javascript files to parse the markdown
  * on the left and the syntax highlighting on the right.
  * 
- * The [source for Docco][1] is available on GitHub, and released under the MIT
- * license.
+ * The [source for Phocco][1] is available on GitHub, and released under the
+ * MIT license.
  * 
  * Install Phocco... by downloading it. It should run on just about any version
  * of PHP. That means it'll work on a vanilla MAMP install or a custom PHP
@@ -50,6 +50,7 @@ function generate_documentation_for_files($files) {
  * list of files to generate the page switcher.
  */
 function generate_documentation_for_file($file, $files=array()) {
+	echo "Generating documentation: {$file}\n";
 	$source = file_get_contents($file);
 	$sections = parse($source);
 	render($file, $sections, $files);
@@ -65,18 +66,15 @@ function generate_documentation_for_file($file, $files=array()) {
  */
 function parse($source) {
 	$sections = $doc = $code = array();
-	$lines = preg_split('/\n+/', $source);
 
 	// If the first line is a shebang or opening PHP tag the strip it out.
 	// Yea, not everyone will agree with this but it's not totally relevant to
 	// the docs and it prevents comments from appearing at the top of the docs.
-	if (preg_match('/^\#\!/', $lines[0])) {
-		array_shift($lines);
-	}
+	$source = preg_replace('/^\#\!.*[\r\n]+/', '', $source);
+	$source = preg_replace('/^\s*<\?php\s*/s', '', $source);
 
-	if (preg_match('/^\s*<\?php\s*$/', $lines[0])) {
-		array_shift($lines);
-	}
+	// Do the split
+	$lines = preg_split('/\n/', $source);
 
 	// Store state as we loop through the lines. We need to know if the last
 	// line was a single (`_s`) or multiline (`_m`) comment so we know what to do with the
@@ -151,86 +149,285 @@ function parse($source) {
 /**
  * ## Rendering
  * 
- * This is messy and not fun. It has inline HTML and a mess of other junk.
- * Normally this would be split out into separate view files, but keeping
- * __Phocco__ to one file is more important.
+ * Parses the sections out into HTML.
  */
 function render($file, $sections, $files) {
-	$basename = basename($file);
-	$extension = preg_replace('/^.*\.(.*)$/', '$1', $basename);
 
-	$src = '<!DOCTYPE html><html><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><title>'.$basename.'</title><link rel="stylesheet" href="http://markhuot.github.com/phocco/resources/phocco.css"><script src="http://code.jquery.com/jquery-1.7.1.min.js"></script><script src="http://markhuot.github.com/phocco/resources/showdown.js"></script><link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet" /><!--script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"--></script><link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" /><style type="text/css">.syntaxhighlighter,.syntaxhighlighter .line.alt1,.syntaxhighlighter .line.alt2{background:none !important;} td.code td.code {padding:0;border:none;}</style></head><body><div id="container"><div id="background"></div>';
+	// var_dump(cwd_path($file));
+	// var_dump(relative_path($file));
+	// die;
 
-	if (count($files) > 1) {
-		$src.= '<div id="jump_to"><a id="jump_handle" href="#">Jump&nbsp;To&hellip;</a><div id="jump_wrapper"><div id="jump_page">';
+	$cwd = rtrim(getcwd(), '/').'/';
+	$relative_path = cwd_path($file);
+	$rendered_file = $cwd.'docs/'.$relative_path.'.html';
 
-		foreach ($files as $file) {
-			$src.= '<a class="source" href="'.basename($file).'.html">'.basename(($file)).'</a>';
-		}
+	$html = view_base(array(
+		'file' => $file,
+		'display_name' => basename($file),
+		'extension' => extension($file),
+		'relative_path' => $relative_path,
+		'files' => $files,
+		'sections' => $sections
+	));
 
-		$src.= '</div></div></div>';
-	}
-
-	$src.= '<table cellspacing=0 cellpadding=0><thead><tr><th class=docs><h1>'.$basename.'</h1></th><th class=code></th></tr></thead><tbody>';
-
-	foreach ($sections as $count => $section) {
-		$src.= '<tr id="section-'.$count.'"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-'.$count.'">&#182;</a></div><div class="doc">';
-		$src.= $section[0];
-		$src.= '</div></td><td class="code"><div class="highlight"><pre class="brush: '.$extension.'">';
-		$src.= htmlentities($section[1]);
-		$src.= '</pre></div></td></tr>';
-	}
-
-	$src.= '</table></div><script>converter = new Showdown.converter();$(".doc").each(function() { $(this).html(converter.makeHtml($(this).text())); }); $("#jump_handle").click(function(e){ $("#jump_wrapper").toggle(); e.preventDefault(); }); </script><script src="https://raw.github.com/alexgorbatchev/SyntaxHighlighter/master/scripts/XRegExp.js"></script><script src="https://raw.github.com/alexgorbatchev/SyntaxHighlighter/master/scripts/shCore.js" type="text/javascript"></script><script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script><script type="text/javascript">
-function path()
-{
-  var args = arguments,
-      result = []
-      ;
-       
-  for(var i = 0; i < args.length; i++)
-      result.push(args[i].replace("@", "http://alexgorbatchev.com/pub/sh/current/scripts/"));
-       
-  return result
-};
-
-SyntaxHighlighter.autoloader.apply(null, path(
-  "applescript            @shBrushAppleScript.js",
-  "actionscript3 as3      @shBrushAS3.js",
-  "bash shell             @shBrushBash.js",
-  "coldfusion cf          @shBrushColdFusion.js",
-  "cpp c                  @shBrushCpp.js",
-  "c# c-sharp csharp      @shBrushCSharp.js",
-  "css                    @shBrushCss.js",
-  "delphi pascal          @shBrushDelphi.js",
-  "diff patch pas         @shBrushDiff.js",
-  "erl erlang             @shBrushErlang.js",
-  "groovy                 @shBrushGroovy.js",
-  "java                   @shBrushJava.js",
-  "jfx javafx             @shBrushJavaFX.js",
-  "js jscript javascript  @shBrushJScript.js",
-  "perl pl                @shBrushPerl.js",
-  "php                    @shBrushPhp.js",
-  "text plain             @shBrushPlain.js",
-  "py python              @shBrushPython.js",
-  "ruby rails ror rb      @shBrushRuby.js",
-  "sass scss              @shBrushSass.js",
-  "scala                  @shBrushScala.js",
-  "sql                    @shBrushSql.js",
-  "vb vbnet               @shBrushVb.js",
-  "xml xhtml xslt html    @shBrushXml.js"
-));
-SyntaxHighlighter.defaults["light"] = true;
-SyntaxHighlighter.defaults["unindent"] = false;
-SyntaxHighlighter.all();
-	</script></body>';
-
-	$docs = rtrim(getcwd(), '/').'/docs/';
-	if (!is_dir($docs)) {
-		mkdir($docs);
-	}
-
-	file_put_contents($docs.$basename.'.html', $src);
+	rmkdir(dirname($rendered_file));
+	file_put_contents($rendered_file, $html);
 }
 
+/**
+ * ## Views
+ * 
+ * Because it's a single file we split our views up into discrete functions to
+ * approximate the same effect.
+ *
+ * First up is the base HTML view that everything else is built off.
+ */
+function view_base($vars) {
+extract($vars);
+ob_start(); ?>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8">
+		<title><?php echo $display_name; ?></title>
+		<link rel="stylesheet" href="http://markhuot.github.com/phocco/resources/phocco.css">
+		<link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet" />
+		<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+		<style type="text/css">
+			.syntaxhighlighter,
+			.syntaxhighlighter .line.alt1,
+			.syntaxhighlighter .line.alt2 {
+				background:none !important;
+			}
+
+			td.code td.code {
+				padding:0;border:none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+		<div id="background"></div>
+			<?php echo view_jump($vars); ?>
+			<?php echo view_sections($vars); ?>
+		</div>
+		<?php echo view_javascript($vars); ?>
+	</body>
+</html>
+<?php
+$str = ob_get_contents();
+ob_end_clean();
+return $str;
+}
+
+/**
+ * The `jump_to` list allows you to browse to other files. There's a little
+ * trickery here to create relative links from every page. That way you can
+ * view Phocco files by double clicking them in the finder.
+ */
+function view_jump($vars) {
+extract($vars);
+ob_start(); ?>
+<?php if (count($files) > 1): ?>
+	<div id="jump_to">
+		<a id="jump_handle" href="#">Jump&nbsp;To&hellip;</a>
+		<div id="jump_wrapper">
+			<div id="jump_page">
+				<?php foreach ($files as $sibling): ?>
+					<a class="source" href="<?php echo relative_path($file, $sibling); ?>.html">
+						<?php echo cwd_path($sibling); ?>
+					</a>
+				<?php endforeach ; ?>
+			</div>
+		</div>
+	</div>
+<?php endif; ?>
+<?php $str = ob_get_contents();
+ob_end_clean();
+return $str;
+}
+
+/**
+ * The `sections` table is the meat of the page. It generates the split view.
+ * Of note, the doc and code have to be flush left so that markdown parses
+ * correctly and the syntax highlighter works appropriately.
+ */
+function view_sections($vars) {
+extract($vars);
+ob_start(); ?>
+<table cellspacing=0 cellpadding=0>
+	<thead>
+		<tr>
+			<th class=docs><h1><?php echo $display_name; ?></h1></th>
+			<th class=code></th>
+		</tr>
+	</thead>
+	<tbody>
+
+		<?php foreach ($sections as $count => $section): ?>
+			<tr id="section-'<?php echo $count ?>'">
+				<td class="docs">
+					<div class="pilwrap">
+						<a class="pilcrow" href="#section-<?php echo $count ?>">&#182;
+						</a>
+					</div>
+<div class="doc">
+<?php echo $section[0]; ?>
+</div>
+				</td>
+				<td class="code">
+					<div class="highlight">
+<pre class="brush: <?php echo $extension; ?>">
+<?php echo htmlentities($section[1]); ?>
+</pre>
+					</div>
+				</td>
+			</tr>
+		<?php endforeach; ?>
+	</tbody>
+</table>
+<?php $str = ob_get_contents();
+ob_end_clean();
+return $str;
+}
+
+/**
+ * All the messy javascript. This is where markdown parses and where syntax
+ * highlighting is kicked off.
+ */
+function view_javascript($vars) {
+extract($vars);
+ob_start(); ?>
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="http://markhuot.github.com/phocco/resources/showdown.js"></script>
+<script>
+	converter = new Showdown.converter();
+	$(".doc").each(function() {
+		$(this).html(converter.makeHtml($(this).text()));
+	});
+
+	$("#jump_handle").click(function(e){
+		$("#jump_wrapper").toggle();
+		e.preventDefault();
+	});
+</script>
+<script src="https://raw.github.com/alexgorbatchev/SyntaxHighlighter/master/scripts/XRegExp.js"></script>
+<script src="https://raw.github.com/alexgorbatchev/SyntaxHighlighter/master/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script>
+<script type="text/javascript">
+	function path()
+	{
+	  var args = arguments,
+	      result = []
+	      ;
+	       
+	  for(var i = 0; i < args.length; i++)
+	      result.push(args[i].replace("@", "http://alexgorbatchev.com/pub/sh/current/scripts/"));
+	       
+	  return result
+	};
+
+	SyntaxHighlighter.autoloader.apply(null, path(
+	  "applescript            @shBrushAppleScript.js",
+	  "actionscript3 as3      @shBrushAS3.js",
+	  "bash shell             @shBrushBash.js",
+	  "coldfusion cf          @shBrushColdFusion.js",
+	  "cpp c                  @shBrushCpp.js",
+	  "c# c-sharp csharp      @shBrushCSharp.js",
+	  "css                    @shBrushCss.js",
+	  "delphi pascal          @shBrushDelphi.js",
+	  "diff patch pas         @shBrushDiff.js",
+	  "erl erlang             @shBrushErlang.js",
+	  "groovy                 @shBrushGroovy.js",
+	  "java                   @shBrushJava.js",
+	  "jfx javafx             @shBrushJavaFX.js",
+	  "js jscript javascript  @shBrushJScript.js",
+	  "perl pl                @shBrushPerl.js",
+	  "php                    @shBrushPhp.js",
+	  "text plain             @shBrushPlain.js",
+	  "py python              @shBrushPython.js",
+	  "ruby rails ror rb      @shBrushRuby.js",
+	  "sass scss              @shBrushSass.js",
+	  "scala                  @shBrushScala.js",
+	  "sql                    @shBrushSql.js",
+	  "vb vbnet               @shBrushVb.js",
+	  "xml xhtml xslt html    @shBrushXml.js"
+	));
+	SyntaxHighlighter.defaults["light"] = true;
+	SyntaxHighlighter.defaults["unindent"] = false;
+	SyntaxHighlighter.all();
+</script>
+<?php $str = ob_get_contents();
+ob_end_clean();
+return $str;
+}
+
+/**
+ * ## Helpers
+ *
+ * Just a simple file to recurively create directories. Takes a single path
+ * and loops through each segment creating them as we go.
+ */
+function rmkdir($path) {
+	$dirs = preg_split('/\//', ltrim($path, '/'));
+	for ($i=1; $len=count($dirs),$i<=$len; $i++) {
+		if (!is_dir($dir = '/'.implode('/', array_slice($dirs, 0, $i)))) {
+			mkdir($dir);
+		}
+	}
+}
+
+/**
+ * Get a path relative to the current working directory
+ */
+function cwd_path($path) {
+	$cwd = rtrim(getcwd(), '/').'/';
+	return preg_replace('/^'.preg_quote($cwd, '/').'/', '', $path);
+}
+
+function relative_path($file1, $file2=FALSE) {
+	if (!$file2) {
+		$file2 = rtrim(getcwd(), '/').'/';
+	}
+
+	if ($file1 == $file2) {
+		return basename($file1);
+	}
+
+	$path = array();
+
+	$file1_dirs = preg_split('/\//', ltrim($file1, '/'));
+	$file2_dirs = preg_split('/\//', ltrim($file2, '/'));
+
+	//print_r($file1_dirs);
+	//print_r($file2_dirs);
+	//print_r(array_diff_assoc($file1_dirs, $file2_dirs));
+
+	foreach ($file1_dirs as $key => $dir) {
+		if (!isset($file2_dirs[$key])) {
+			$path[] = '..';
+		}
+		else if ($file2_dirs[$key] !== $dir) {
+			break;
+		}
+	}
+
+	if (isset($file2_dirs[++$key])) {
+		for ($i=$key; $len=count($file2_dirs),$i<$len; $i++) {
+			$path[] = $file2_dirs[$key];
+		}
+	}
+
+	$path = implode('/', $path);
+	$path.= $path ? '/' : '';
+	return $path.basename($file2);
+}
+
+function extension($file) {
+	return preg_replace('/^.*\.(.*)$/', '$1', $file);
+}
+
+/**
+ * ## Do It!
+ */
 generate_documentation_for_files(array_slice($argv, 1));
