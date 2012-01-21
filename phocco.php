@@ -196,8 +196,7 @@ ob_start(); ?>
 		<title><?php echo $display_name; ?></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
-		<!--link rel="stylesheet" href="http://markhuot.github.com/phocco/resources/phocco.css"-->
-		<link rel="stylesheet" href="../resources/phocco.css">
+		<link rel="stylesheet" href="http://markhuot.github.com/phocco/resources/phocco.css">
 	</head>
 	<body>
 		<div id="container">
