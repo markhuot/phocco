@@ -111,6 +111,9 @@ table td {
     vertical-align: top;
     text-align: left;
   }
+  .doc {
+    width: 100%;
+  }
     .docs pre {
       margin: 15px 0 15px;
       padding-left: 15px;
@@ -151,18 +154,38 @@ table td {
       font-size: 12px; line-height: 18px;
       font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
       margin: 0; padding: 0;
+    }
+    td.code * {
       white-space: nowrap;
     }
 
+@media only screen and (max-width:400px) {
+  td.docs, th.docs {
+   padding: 10px 10px 1px 10px;
+  }
+}
+
 @media only screen and (max-width:900px) {
-  table, tbody, tr, td.docs, td.code {
+  table, tbody, tr, td.docs, td.code, th.docs {
     display: block;
     width: auto;
     min-width: 0;
-    max-width: 1000px;
+    max-width: 10000px;
+  }
+
+  th.code {
+    display: none;
   }
 
   td.code {
-    padding: 10px 20px 16px;
+    padding: 10px 50px 16px;
+  }
+}
+
+@media only screen and (min-width:1200px) {
+  td.docs, th.docs {
+    width: 650px;
+    max-width: 650px;
+    min-width: 650px;
   }
 }
