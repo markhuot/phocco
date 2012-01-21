@@ -194,7 +194,7 @@ ob_start(); ?>
 	<head>
 		<meta http-equiv="content-type" content="text/html;charset=utf-8">
 		<title><?php echo $display_name; ?></title>
-		<link rel="stylesheet" href="../resources/phocco.css">
+		<link rel="stylesheet" href="http://markhuot.github.com/phocco/resources/phocco.css">
 		<link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet" />
 		<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
 		<style type="text/css">
