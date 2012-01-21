@@ -3,28 +3,10 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html;charset=utf-8">
 		<title>phocco.php</title>
-<<<<<<< HEAD
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
 		<!--link rel="stylesheet" href="http://markhuot.github.com/phocco/resources/phocco.css"-->
 		<link rel="stylesheet" href="../resources/phocco.css">
-=======
-		<meta name="viewport" content="width=device-width">
-		<link rel="stylesheet" href="http://markhuot.github.com/phocco/resources/phocco.css">
-		<link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet" />
-		<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
-		<style type="text/css">
-			.syntaxhighlighter,
-			.syntaxhighlighter .line.alt1,
-			.syntaxhighlighter .line.alt2 {
-				background:none !important;
-			}
-
-			td.code td.code {
-				padding:0;border:none;
-			}
-		</style>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 	</head>
 	<body>
 		<div id="container">
@@ -32,26 +14,16 @@
 		<a id="jump_handle" href="#">Jump&nbsp;To&hellip;</a>
 		<div id="jump_wrapper">
 			<div id="jump_page">
-<<<<<<< HEAD
-									<a class="source" href="docs.html">
-						docs					</a>
 									<a class="source" href="phocco.php.html">
 						phocco.php					</a>
 									<a class="source" href="README.md.html">
 						README.md					</a>
 									<a class="source" href="resources.html">
 						resources					</a>
-=======
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 									<a class="source" href="resources/phocco.css.html">
 						resources/phocco.css					</a>
 									<a class="source" href="resources/showdown.js.html">
 						resources/showdown.js					</a>
-<<<<<<< HEAD
-=======
-									<a class="source" href="phocco.php.html">
-						phocco.php					</a>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 							</div>
 		</div>
 	</div>
@@ -106,15 +78,7 @@ The HTML files are written to the current working directory.
 </div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 									</td>
-=======
-					<div class="highlight">
-<pre class="brush: php">
-</pre>
-					</div>
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'1'">
 				<td class="docs">
@@ -132,11 +96,7 @@ certain everything below is only dealing with relative paths.
 </div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 function generate_documentation_for_files($files) {
 	foreach ($files as $key =&gt; $file) {
@@ -148,11 +108,7 @@ function generate_documentation_for_files($files) {
 }
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'2'">
 				<td class="docs">
@@ -167,11 +123,7 @@ list of files to generate the page switcher.
 </div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 function generate_documentation_for_file($file, $files=array()) {
 	if (is_dir(realpath($file))) {
@@ -185,11 +137,7 @@ function generate_documentation_for_file($file, $files=array()) {
 }
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'3'">
 				<td class="docs">
@@ -208,21 +156,13 @@ specific to PHP.
 </div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 function parse($source) {
 	$sections = $doc = $code = array();
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'4'">
 				<td class="docs">
@@ -236,21 +176,13 @@ function parse($source) {
  the docs and it prevents comments from appearing at the top of the docs.</div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 	$source = preg_replace('/^\#\!.*[\r\n]+/', '', $source);
 	$source = preg_replace('/^\s*&lt;\?php\s*/s', '', $source);
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'5'">
 				<td class="docs">
@@ -262,20 +194,12 @@ function parse($source) {
  Do the split</div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 	$lines = preg_split('/\n/', $source);
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'6'">
 				<td class="docs">
@@ -289,21 +213,13 @@ function parse($source) {
  current line.</div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 	$in_comment_s = FALSE;
 	$in_comment_m = FALSE;
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'7'">
 				<td class="docs">
@@ -318,20 +234,12 @@ function parse($source) {
  assume the content is code and dump it into the code half.</div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 	foreach ($lines as $line) {
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'8'">
 				<td class="docs">
@@ -344,11 +252,7 @@ function parse($source) {
  documentation half and close out the comment variable.</div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 		if ($in_comment_m &amp;&amp; preg_match('/^\s*\*\/\s*$/', $line)) {
 			$doc[] = preg_replace('/^\s*\*\/\s*$/', '', $line);
@@ -358,11 +262,7 @@ function parse($source) {
 		}
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'9'">
 				<td class="docs">
@@ -375,11 +275,7 @@ function parse($source) {
  documentation half.</div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 		if ($in_comment_m) {
 			$doc[] = preg_replace('/^\s*\*\s?/', '', $line);
@@ -388,11 +284,7 @@ function parse($source) {
 		}
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'10'">
 				<td class="docs">
@@ -406,11 +298,7 @@ function parse($source) {
  reset everything and start a new section.</div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 		if (preg_match('/^\s*\/\*\*/', $line)) {
 			if ($doc || $code) {
@@ -424,11 +312,7 @@ function parse($source) {
 		}
 		</pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'11'">
 				<td class="docs">
@@ -443,11 +327,7 @@ function parse($source) {
  continuation of the last comment.</div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 		if (preg_match('/^\s*\/\//', $line)) {
 			if (!$in_comment_s &amp;&amp; ($doc || $code)) {
@@ -460,11 +340,7 @@ function parse($source) {
 		}
 		</pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'12'">
 				<td class="docs">
@@ -477,22 +353,14 @@ function parse($source) {
  add the line to the code half.</div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 		$code[] = $line;
 		$in_comment_s = FALSE;
 	}
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'13'">
 				<td class="docs">
@@ -504,20 +372,12 @@ function parse($source) {
  Add the final buffer into the sections array.</div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 	$sections[] = array(implode(&quot;\n&quot;, $doc), implode(&quot;\n&quot;, $code));
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'14'">
 				<td class="docs">
@@ -529,21 +389,13 @@ function parse($source) {
  Give back.</div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 	return $sections;
 }
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'15'">
 				<td class="docs">
@@ -559,11 +411,7 @@ Parses the sections out into HTML.
 </div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 function render($file, $sections, $files) {
 	$cwd = rtrim(getcwd(), '/').'/';
@@ -582,11 +430,7 @@ function render($file, $sections, $files) {
 }
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'16'">
 				<td class="docs">
@@ -605,11 +449,7 @@ First up is the base HTML view that everything else is built off.
 </div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 function view_base($vars) {
 extract($vars);
@@ -619,28 +459,10 @@ ob_start(); ?&gt;
 	&lt;head&gt;
 		&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;
 		&lt;title&gt;&lt;?php echo $display_name; ?&gt;&lt;/title&gt;
-<<<<<<< HEAD
 		&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;
 		&lt;link href=&quot;http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt;
 		&lt;!--link rel=&quot;stylesheet&quot; href=&quot;http://markhuot.github.com/phocco/resources/phocco.css&quot;--&gt;
 		&lt;link rel=&quot;stylesheet&quot; href=&quot;../resources/phocco.css&quot;&gt;
-=======
-		&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot;&gt;
-		&lt;link rel=&quot;stylesheet&quot; href=&quot;http://markhuot.github.com/phocco/resources/phocco.css&quot;&gt;
-		&lt;link href=&quot;http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot; /&gt;
-		&lt;link href=&quot;http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt;
-		&lt;style type=&quot;text/css&quot;&gt;
-			.syntaxhighlighter,
-			.syntaxhighlighter .line.alt1,
-			.syntaxhighlighter .line.alt2 {
-				background:none !important;
-			}
-
-			td.code td.code {
-				padding:0;border:none;
-			}
-		&lt;/style&gt;
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 	&lt;/head&gt;
 	&lt;body&gt;
 		&lt;div id=&quot;container&quot;&gt;
@@ -657,11 +479,7 @@ return $str;
 }
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'17'">
 				<td class="docs">
@@ -677,11 +495,7 @@ view Phocco files by double clicking them in the finder.
 </div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 function view_jump($vars) {
 extract($vars);
@@ -706,11 +520,7 @@ return $str;
 }
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'18'">
 				<td class="docs">
@@ -726,11 +536,7 @@ correctly and the syntax highlighter works appropriately.
 </div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 function view_sections($vars) {
 extract($vars);
@@ -756,19 +562,13 @@ ob_start(); ?&gt;
 &lt;/div&gt;
 				&lt;/td&gt;
 				&lt;td class=&quot;code&quot;&gt;
-<<<<<<< HEAD
 					&lt;?php if ($section[1]): ?&gt;
-=======
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 					&lt;div class=&quot;highlight&quot;&gt;
 &lt;pre class=&quot;brush: &lt;?php echo $extension; ?&gt;&quot;&gt;
 &lt;?php echo htmlentities($section[1]); ?&gt;
 &lt;/pre&gt;
 					&lt;/div&gt;
-<<<<<<< HEAD
 					&lt;?php endif; ?&gt;
-=======
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 				&lt;/td&gt;
 			&lt;/tr&gt;
 		&lt;?php endforeach; ?&gt;
@@ -780,11 +580,7 @@ return $str;
 }
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'19'">
 				<td class="docs">
@@ -799,11 +595,7 @@ highlighting is kicked off.
 </div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 function view_javascript($vars) {
 extract($vars);
@@ -873,11 +665,7 @@ return $str;
 }
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'20'">
 				<td class="docs">
@@ -894,11 +682,7 @@ and loops through each segment creating them as we go.
 </div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 function rmkdir($path) {
 	$dirs = preg_split('/\//', ltrim($path, '/'));
@@ -910,11 +694,7 @@ function rmkdir($path) {
 }
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'21'">
 				<td class="docs">
@@ -930,11 +710,7 @@ last path segment, even if it is not a file.
 </div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 function relative_path($from, $to, $ps=DIRECTORY_SEPARATOR) {
 
@@ -956,11 +732,7 @@ function relative_path($from, $to, $ps=DIRECTORY_SEPARATOR) {
 }
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'22'">
 				<td class="docs">
@@ -974,22 +746,14 @@ Return the file extension of the passed file/path.
 </div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 function extension($file) {
 	return preg_replace('/^.*\.(.*)$/', '$1', $file);
 }
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 					<tr id="section-'23'">
 				<td class="docs">
@@ -1003,20 +767,12 @@ function extension($file) {
 </div>
 				</td>
 				<td class="code">
-<<<<<<< HEAD
 										<div class="highlight">
-=======
-					<div class="highlight">
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 <pre class="brush: php">
 generate_documentation_for_files(array_slice($argv, 1));
 </pre>
 					</div>
-<<<<<<< HEAD
 									</td>
-=======
-				</td>
->>>>>>> 61c5d3bf6b3b79a32427dbe20341a10fbf2838e1
 			</tr>
 			</tbody>
 </table>
