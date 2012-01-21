@@ -38,6 +38,8 @@
 
 /**
  * Loop over an array of files generating documentation for each file.
+ * ## Generate Docs
+ *
  * Unfortunately users can enter any file they want here, some relative to the
  * current working directory, others absolute. We don't know. So, we'll turn
  * every path into a full path then down to a relative path. That way we're
