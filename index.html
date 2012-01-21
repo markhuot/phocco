@@ -98,7 +98,10 @@ function generate_documentation_for_files($files) {
 		$files[$key] = relative_path(getcwd().'/index', realpath($file));
 	}
 	foreach ($files as $file) {
-		generate_documentation_for_file($file, $files);
+		echo &quot;Generating documentation: {$file}\n&quot;;
+		$source = file_get_contents(realpath($file));
+		$sections = parse($source);
+		render($file, $sections, $files);
 	}
 }
 </pre>
@@ -109,35 +112,6 @@ function generate_documentation_for_files($files) {
 				<td class="docs">
 					<div class="pilwrap">
 						<a class="pilcrow" href="#section-2">&#182;
-						</a>
-					</div>
-<div class="doc">
-
-Generates documentation for a single file. This function also accepts a
-list of files to generate the page switcher.
-</div>
-				</td>
-				<td class="code">
-										<div class="highlight">
-<pre class="brush: php">
-function generate_documentation_for_file($file, $files=array()) {
-	if (is_dir(realpath($file))) {
-		return;
-	}
-
-	echo &quot;Generating documentation: {$file}\n&quot;;
-	$source = file_get_contents(realpath($file));
-	$sections = parse($source);
-	render($file, $sections, $files);
-}
-</pre>
-					</div>
-									</td>
-			</tr>
-					<tr id="section-'3'">
-				<td class="docs">
-					<div class="pilwrap">
-						<a class="pilcrow" href="#section-3">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -159,10 +133,10 @@ function parse($source) {
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'4'">
+					<tr id="section-'3'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-4">&#182;
+						<a class="pilcrow" href="#section-3">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -179,10 +153,10 @@ function parse($source) {
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'5'">
+					<tr id="section-'4'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-5">&#182;
+						<a class="pilcrow" href="#section-4">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -196,10 +170,10 @@ function parse($source) {
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'6'">
+					<tr id="section-'5'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-6">&#182;
+						<a class="pilcrow" href="#section-5">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -216,10 +190,10 @@ function parse($source) {
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'7'">
+					<tr id="section-'6'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-7">&#182;
+						<a class="pilcrow" href="#section-6">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -236,10 +210,10 @@ function parse($source) {
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'8'">
+					<tr id="section-'7'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-8">&#182;
+						<a class="pilcrow" href="#section-7">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -259,10 +233,10 @@ function parse($source) {
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'9'">
+					<tr id="section-'8'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-9">&#182;
+						<a class="pilcrow" href="#section-8">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -281,10 +255,10 @@ function parse($source) {
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'10'">
+					<tr id="section-'9'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-10">&#182;
+						<a class="pilcrow" href="#section-9">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -309,10 +283,10 @@ function parse($source) {
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'11'">
+					<tr id="section-'10'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-11">&#182;
+						<a class="pilcrow" href="#section-10">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -337,10 +311,10 @@ function parse($source) {
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'12'">
+					<tr id="section-'11'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-12">&#182;
+						<a class="pilcrow" href="#section-11">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -357,10 +331,10 @@ function parse($source) {
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'13'">
+					<tr id="section-'12'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-13">&#182;
+						<a class="pilcrow" href="#section-12">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -374,10 +348,10 @@ function parse($source) {
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'14'">
+					<tr id="section-'13'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-14">&#182;
+						<a class="pilcrow" href="#section-13">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -392,10 +366,10 @@ function parse($source) {
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'15'">
+					<tr id="section-'14'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-15">&#182;
+						<a class="pilcrow" href="#section-14">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -427,10 +401,10 @@ function render($file, $sections, $files) {
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'16'">
+					<tr id="section-'15'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-16">&#182;
+						<a class="pilcrow" href="#section-15">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -475,10 +449,10 @@ return $str;
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'17'">
+					<tr id="section-'16'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-17">&#182;
+						<a class="pilcrow" href="#section-16">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -516,10 +490,10 @@ return $str;
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'18'">
+					<tr id="section-'17'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-18">&#182;
+						<a class="pilcrow" href="#section-17">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -576,10 +550,10 @@ return $str;
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'19'">
+					<tr id="section-'18'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-19">&#182;
+						<a class="pilcrow" href="#section-18">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -661,10 +635,10 @@ return $str;
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'20'">
+					<tr id="section-'19'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-20">&#182;
+						<a class="pilcrow" href="#section-19">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -690,10 +664,10 @@ function rmkdir($path) {
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'21'">
+					<tr id="section-'20'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-21">&#182;
+						<a class="pilcrow" href="#section-20">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -728,10 +702,10 @@ function relative_path($from, $to, $ps=DIRECTORY_SEPARATOR) {
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'22'">
+					<tr id="section-'21'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-22">&#182;
+						<a class="pilcrow" href="#section-21">&#182;
 						</a>
 					</div>
 <div class="doc">
@@ -749,10 +723,10 @@ function extension($file) {
 					</div>
 									</td>
 			</tr>
-					<tr id="section-'23'">
+					<tr id="section-'22'">
 				<td class="docs">
 					<div class="pilwrap">
-						<a class="pilcrow" href="#section-23">&#182;
+						<a class="pilcrow" href="#section-22">&#182;
 						</a>
 					</div>
 <div class="doc">
