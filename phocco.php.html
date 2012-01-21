@@ -556,7 +556,7 @@ ob_start(); ?&gt;
 &lt;/div&gt;
 				&lt;/td&gt;
 				&lt;td class=&quot;code&quot;&gt;
-					&lt;?php if ($section[1]): ?&gt;
+					&lt;?php if (trim($section[1])): ?&gt;
 					&lt;div class=&quot;highlight&quot;&gt;
 &lt;pre class=&quot;brush: &lt;?php echo $extension; ?&gt;&quot;&gt;
 &lt;?php echo htmlentities($section[1]); ?&gt;
