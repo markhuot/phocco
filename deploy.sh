@@ -12,3 +12,8 @@ cp docs/phocco.php.html .
 cp docs/phocco.php.html index.html
 cp docs/resources/showdown.js.html resources/
 cp docs/resources/phocco.css.html resources/
+
+git commit -am "updates from master"
+git push origin gh-pages
+
+git checkout master
