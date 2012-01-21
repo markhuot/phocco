@@ -160,11 +160,11 @@ table td {
       white-space: nowrap;
     }
 
-            .code .syntaxhighlighter,
-            .code .syntaxhighlighter .line.alt1,
-            .code .syntaxhighlighter .line.alt2 {
-                background:none !important;
-            }
+.syntaxhighlighter,
+.syntaxhighlighter .line.alt1,
+.syntaxhighlighter .line.alt2 {
+	background: none !important;
+}
  
             td.code td.code {
                 padding:0;border:none;
