@@ -48,23 +48,11 @@ function generate_documentation_for_files($files) {
 		$files[$key] = relative_path(getcwd().'/index', realpath($file));
 	}
 	foreach ($files as $file) {
-		generate_documentation_for_file($file, $files);
+		echo "Generating documentation: {$file}\n";
+		$source = file_get_contents(realpath($file));
+		$sections = parse($source);
+		render($file, $sections, $files);
 	}
-}
-
-/**
- * Generates documentation for a single file. This function also accepts a
- * list of files to generate the page switcher.
- */
-function generate_documentation_for_file($file, $files=array()) {
-	if (is_dir(realpath($file))) {
-		return;
-	}
-
-	echo "Generating documentation: {$file}\n";
-	$source = file_get_contents(realpath($file));
-	$sections = parse($source);
-	render($file, $sections, $files);
 }
 
 /**
