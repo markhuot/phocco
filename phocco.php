@@ -48,12 +48,12 @@ function generate_documentation_for_files($files) {
 		$files[$key] = relative_path(getcwd(), realpath($file));
 	}
 
-	// $a = '/'.(dirname($files[2])=='.'?'':dirname($files[2]));
-	// $b = '/'.(dirname($files[0])=='.'?'':dirname($files[1]));
-	// var_dump($a);
-	// var_dump($b);
-	// var_dump(relative_path($a, $b));
-	// die;
+	//$a = '/'.(dirname($files[2])=='.'?'':dirname($files[2]));
+	//$b = '/'.(dirname($files[0])=='.'?'':dirname($files[1]));
+	//var_dump($a);
+	//var_dump($b);
+	//var_dump(relative_path($a, $b));
+	//die;
 
 	foreach ($files as $file) {
 		generate_documentation_for_file($file, $files);
@@ -65,6 +65,10 @@ function generate_documentation_for_files($files) {
  * list of files to generate the page switcher.
  */
 function generate_documentation_for_file($file, $files=array()) {
+	if (is_dir(realpath($file))) {
+		return;
+	}
+
 	echo "Generating documentation: {$file}\n";
 	$source = file_get_contents(realpath($file));
 	$sections = parse($source);
