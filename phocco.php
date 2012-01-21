@@ -12,8 +12,8 @@
  * page is the result of running Phocco against its own source file.
  * 
  * Most of this was written while waiting for Ruby, Python, Node, etc… to
- * build (so I could use Docco!). Docco’s gorgeous HTML and CSS are taken
- * verbatim. The main difference is that Phocco is written in PHP and _has no
+ * build (so I could use Docco!).
+ * The main difference is that Phocco is written in PHP and _has no
  * dependancies_!
  * 
  * That's right, it uses remotely hosted Javascript files to parse the markdown
