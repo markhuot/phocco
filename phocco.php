@@ -268,7 +268,7 @@ ob_start(); ?>
 </div>
 				</td>
 				<td class="code">
-					<?php if ($section[1]): ?>
+					<?php if (trim($section[1])): ?>
 					<div class="highlight">
 <pre class="brush: <?php echo $extension; ?>">
 <?php echo htmlentities($section[1]); ?>
