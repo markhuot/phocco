@@ -45,16 +45,8 @@
  */
 function generate_documentation_for_files($files) {
 	foreach ($files as $key => $file) {
-		$files[$key] = relative_path(getcwd(), realpath($file));
+		$files[$key] = relative_path(getcwd().'/index', realpath($file));
 	}
-
-	//$a = '/'.(dirname($files[2])=='.'?'':dirname($files[2]));
-	//$b = '/'.(dirname($files[0])=='.'?'':dirname($files[1]));
-	//var_dump($a);
-	//var_dump($b);
-	//var_dump(relative_path($a, $b));
-	//die;
-
 	foreach ($files as $file) {
 		generate_documentation_for_file($file, $files);
 	}
@@ -172,12 +164,10 @@ function parse($source) {
  */
 function render($file, $sections, $files) {
 	$cwd = rtrim(getcwd(), '/').'/';
-	$docs = $cwd.'docs/';
-	$rendered_file = $docs.$file.'.html';
+	$rendered_file = $cwd.'docs/'.$file.'.html';
 
 	$html = view_base(array(
 		'file' => $file,
-		'docs' => $docs,
 		'display_name' => basename($file),
 		'extension' => extension($file),
 		'files' => $files,
@@ -204,7 +194,7 @@ ob_start(); ?>
 	<head>
 		<meta http-equiv="content-type" content="text/html;charset=utf-8">
 		<title><?php echo $display_name; ?></title>
-		<link rel="stylesheet" href="http://markhuot.github.com/phocco/resources/phocco.css">
+		<link rel="stylesheet" href="../resources/phocco.css">
 		<link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet" />
 		<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
 		<style type="text/css">
@@ -221,7 +211,6 @@ ob_start(); ?>
 	</head>
 	<body>
 		<div id="container">
-		<div id="background"></div>
 			<?php echo view_jump($vars); ?>
 			<?php echo view_sections($vars); ?>
 		</div>
@@ -248,12 +237,7 @@ ob_start(); ?>
 		<div id="jump_wrapper">
 			<div id="jump_page">
 				<?php foreach ($files as $sibling): ?>
-					<a class="source" href="[
-						<?php
-						$a = '/'.dirname($file)=='.'?'':dirname($file);
-						$b = '/'.dirname($sibling)=='.'?'':dirname($sibling);
-						echo relative_path($a, $b);
-						?>].html">
+					<a class="source" href="<?php echo relative_path($file, $sibling); ?>.html">
 						<?php echo $sibling; ?>
 					</a>
 				<?php endforeach ; ?>
@@ -397,20 +381,16 @@ function rmkdir($path) {
 }
 
 /**
- * Get a path relative to the current working directory
+ * Get a relative path between `$from` and `$to`. Note: both parameters _must_
+ * be a file path. The way php's `dirname` function works it strips off the
+ * last path segment, even if it is not a file.
  */
-function cwd_path($path) {
-	$cwd = rtrim(getcwd(), '/').'/';
-	return preg_replace('/^'.preg_quote($cwd, '/').'/', '', $path);
-}
+function relative_path($from, $to, $ps=DIRECTORY_SEPARATOR) {
 
-function relative_path($from, $to=FALSE, $ps=DIRECTORY_SEPARATOR) {
-	if (!$to) {
-		$to = rtrim(getcwd(), '/').'/';
-	}
+	$from = dirname($from)=='.'?'':dirname($from);
 
-	if ($from == '.') { $from = ''; }
-	if ($to == '.') { $to = ''; }
+	$from = '/'.ltrim($from, '/');
+	$to = '/'.ltrim($to, '/');
 
 	$from = explode($ps, rtrim($from, $ps));
 	$to = explode($ps, rtrim($to, $ps));
