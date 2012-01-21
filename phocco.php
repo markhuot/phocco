@@ -194,21 +194,10 @@ ob_start(); ?>
 	<head>
 		<meta http-equiv="content-type" content="text/html;charset=utf-8">
 		<title><?php echo $display_name; ?></title>
-		<meta name="viewport" content="width=device-width">
-		<link rel="stylesheet" href="http://markhuot.github.com/phocco/resources/phocco.css">
-		<link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet" />
+		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
-		<style type="text/css">
-			.syntaxhighlighter,
-			.syntaxhighlighter .line.alt1,
-			.syntaxhighlighter .line.alt2 {
-				background:none !important;
-			}
-
-			td.code td.code {
-				padding:0;border:none;
-			}
-		</style>
+		<!--link rel="stylesheet" href="http://markhuot.github.com/phocco/resources/phocco.css"-->
+		<link rel="stylesheet" href="../resources/phocco.css">
 	</head>
 	<body>
 		<div id="container">
@@ -280,11 +269,13 @@ ob_start(); ?>
 </div>
 				</td>
 				<td class="code">
+					<?php if ($section[1]): ?>
 					<div class="highlight">
 <pre class="brush: <?php echo $extension; ?>">
 <?php echo htmlentities($section[1]); ?>
 </pre>
 					</div>
+					<?php endif; ?>
 				</td>
 			</tr>
 		<?php endforeach; ?>

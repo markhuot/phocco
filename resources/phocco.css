@@ -74,7 +74,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 10px 0 10px 10px;
   z-index: 2;
   overflow: auto;
-  width: 300px;
+  width: 280px;
 }
 #jump_wrapper a {
   display: block;
@@ -141,14 +141,15 @@ table td {
           opacity: 1;
         }
   td.code, th.code {
-    padding: 10px 15px 16px 25px;
     vertical-align: top;
     background: #f5f5ff;
-    border-left: 1px solid #e5e5ee;
   }
   .highlight {
+    padding: 10px 15px 16px 50px;
+    background: #f5f5ff;
     overflow: auto;
-    width: 100%;
+    border: 1px solid #e5e5ee;
+    border-width: 0 0 0 1px;
   }
     pre, tt, code {
       font-size: 12px; line-height: 18px;
@@ -158,6 +159,17 @@ table td {
     td.code * {
       white-space: nowrap;
     }
+
+            .code .syntaxhighlighter,
+            .code .syntaxhighlighter .line.alt1,
+            .code .syntaxhighlighter .line.alt2 {
+                background:none !important;
+            }
+ 
+            td.code td.code {
+                padding:0;border:none;
+            }
+
 
 @media only screen and (max-width:400px) {
   td.docs, th.docs {
@@ -177,8 +189,15 @@ table td {
     display: none;
   }
 
-  td.code {
-    padding: 10px 50px 16px;
+  td.code, th.code {
+    background: none;
+  }
+  .highlight {
+    Border-width: 1px 0;
+  }
+
+  td h1, td h2, td h3, td h4, td h5, td h6 {
+    margin: 50px 0 15px 0;
   }
 }
 
