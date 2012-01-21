@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8">
+		<title>phocco.css</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+		<!--link rel="stylesheet" href="http://markhuot.github.com/phocco/resources/phocco.css"-->
+		<link rel="stylesheet" href="../resources/phocco.css">
+	</head>
+	<body>
+		<div id="container">
+				<div id="jump_to">
+		<a id="jump_handle" href="#">Jump&nbsp;To&hellip;</a>
+		<div id="jump_wrapper">
+			<div id="jump_page">
+									<a class="source" href="../docs.html">
+						docs					</a>
+									<a class="source" href="../phocco.php.html">
+						phocco.php					</a>
+									<a class="source" href="../README.md.html">
+						README.md					</a>
+									<a class="source" href=".html">
+						resources					</a>
+									<a class="source" href="phocco.css.html">
+						resources/phocco.css					</a>
+									<a class="source" href="showdown.js.html">
+						resources/showdown.js					</a>
+							</div>
+		</div>
+	</div>
+			<table cellspacing=0 cellpadding=0>
+	<thead>
+		<tr>
+			<th class=docs><h1>phocco.css</h1></th>
+			<th class=code></th>
+		</tr>
+	</thead>
+	<tbody>
+
+					<tr id="section-'0'">
+				<td class="docs">
+					<div class="pilwrap">
+						<a class="pilcrow" href="#section-0">&#182;
+						</a>
+					</div>
+<div class="doc">
+</div>
+				</td>
+				<td class="code">
+										<div class="highlight">
+<pre class="brush: css">
+/*--------------------- Layout and Typography ----------------------------*/
+body {
+  font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
+  font-size: 15px;
+  line-height: 22px;
+  color: #252519;
+  margin: 0; padding: 0;
+}
+a {
+  color: #261a3b;
+}
+  a:visited {
+    color: #261a3b;
+  }
+p {
+  margin: 0 0 15px 0;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin: 0px 0 15px 0;
+}
+  h1 {
+    margin-top: 40px;
+  }
+#container {
+  position: relative;
+}
+#background {
+  position: fixed;
+  top: 0; left: 525px; right: 0; bottom: 0;
+  background: #f5f5ff;
+  border-left: 1px solid #e5e5ee;
+  z-index: -1;
+}
+#jump_to {
+  position:fixed;
+  top: 10px;
+  margin-top: 1em;
+  right: 0px;
+  font: 13px Helvetica, Arial;
+  padding: 20px;
+}
+#jump_to:hover #jump_handle {
+  border-radius: 10px 10px 0 0;
+  background: #fff;
+  border-color: transparent;
+  color: #333;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+}
+#jump_to:hover #jump_wrapper {
+  display: block;
+}
+#jump_to a {
+  text-decoration: none;
+}
+#jump_handle {
+  position: absolute;
+  top: -1em;
+  right: 20px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-bottom-color: rgba(255,255,255,0.2);
+  border-right-color: rgba(255,255,255,0.2);
+  z-index: 1;
+  color: rgba(0,0,0,0.5);
+  text-shadow: 0 1px 0 #fff;
+}
+#jump_wrapper {
+  position: relative;
+  display: none;
+  background: #fff;
+  box-shadow: 2px 5px 5px rgba(0,0,0,0.2);
+  border-radius: 10px 0 10px 10px;
+  z-index: 2;
+  overflow: auto;
+  width: 280px;
+}
+#jump_wrapper a {
+  display: block;
+  padding: 10px;
+  border-top: 1px solid #eee;
+}
+#jump_wrapper a:first-child {
+  border-top: none;
+  border-radius: 10px 0 0 0;
+}
+#jump_wrapper a:last-child {
+  border-radius: 0 0 10px 10px;
+}
+#jump_wrapper a:hover {
+  font-weight: bold;
+  background: #8e8eff;
+  color: #fff;
+}
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+table td {
+  border: 0;
+  outline: 0;
+}
+  td.docs, th.docs {
+    width: 450px;
+    min-width: 450px;
+    max-width: 450px;
+    min-height: 5px;
+    padding: 10px 25px 1px 50px;
+    overflow-x: hidden;
+    vertical-align: top;
+    text-align: left;
+  }
+  .doc {
+    width: 100%;
+  }
+    .docs pre {
+      margin: 15px 0 15px;
+      padding-left: 15px;
+    }
+    .docs p tt, .docs p code {
+      background: #f8f8ff;
+      border: 1px solid #dedede;
+      font-size: 12px;
+      padding: 0 0.2em;
+    }
+    .pilwrap {
+      position: relative;
+    }
+      .pilcrow {
+        font: 12px Helvetica, Arial;
+        text-decoration: none;
+        color: #454545;
+        position: absolute;
+        top: 3px; left: -20px;
+        padding: 1px 2px;
+        opacity: 0;
+        -webkit-transition: opacity 0.2s linear;
+      }
+        td.docs:hover .pilcrow {
+          opacity: 1;
+        }
+  td.code, th.code {
+    vertical-align: top;
+    background: #f5f5ff;
+  }
+  .highlight {
+    padding: 10px 15px 16px 50px;
+    background: #f5f5ff;
+    overflow: auto;
+    border: 1px solid #e5e5ee;
+    border-width: 0 0 0 1px;
+  }
+    pre, tt, code {
+      font-size: 12px; line-height: 18px;
+      font-family: Menlo, Monaco, Consolas, &quot;Lucida Console&quot;, monospace;
+      margin: 0; padding: 0;
+    }
+    td.code * {
+      white-space: nowrap;
+    }
+
+.syntaxhighlighter,
+.syntaxhighlighter .line.alt1,
+.syntaxhighlighter .line.alt2 {
+	background: none !important;
+}
+&Acirc;&nbsp;
+&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;td.code td.code {
+&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;padding:0;border:none;
+&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;&Acirc;&nbsp;}
+
+
+@media only screen and (max-width:400px) {
+  td.docs, th.docs {
+   padding: 10px 10px 1px 10px;
+  }
+}
+
+@media only screen and (max-width:900px) {
+  table, tbody, tr, td.docs, td.code, th.docs {
+    display: block;
+    width: auto;
+    min-width: 0;
+    max-width: 10000px;
+  }
+
+  th.code {
+    display: none;
+  }
+
+  td.code, th.code {
+    background: none;
+  }
+  .highlight {
+    Border-width: 1px 0;
+  }
+
+  td h1, td h2, td h3, td h4, td h5, td h6 {
+    margin: 50px 0 15px 0;
+  }
+}
+
+@media only screen and (min-width:1200px) {
+  td.docs, th.docs {
+    width: 650px;
+    max-width: 650px;
+    min-width: 650px;
+  }
+}
+</pre>
+					</div>
+									</td>
+			</tr>
+			</tbody>
+</table>
+		</div>
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="http://markhuot.github.com/phocco/resources/showdown.js"></script>
+<script>
+	converter = new Showdown.converter();
+	$(".doc").each(function() {
+		$(this).html(converter.makeHtml($(this).text()));
+	});
+
+	$("#jump_handle").click(function(e){
+		$("#jump_wrapper").toggle();
+		e.preventDefault();
+	});
+</script>
+<script src="https://raw.github.com/alexgorbatchev/SyntaxHighlighter/master/scripts/XRegExp.js"></script>
+<script src="https://raw.github.com/alexgorbatchev/SyntaxHighlighter/master/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script>
+<script type="text/javascript">
+	function path()
+	{
+	  var args = arguments,
+	      result = []
+	      ;
+	       
+	  for(var i = 0; i < args.length; i++)
+	      result.push(args[i].replace("@", "http://alexgorbatchev.com/pub/sh/current/scripts/"));
+	       
+	  return result
+	};
+
+	SyntaxHighlighter.autoloader.apply(null, path(
+	  "applescript            @shBrushAppleScript.js",
+	  "actionscript3 as3      @shBrushAS3.js",
+	  "bash shell             @shBrushBash.js",
+	  "coldfusion cf          @shBrushColdFusion.js",
+	  "cpp c                  @shBrushCpp.js",
+	  "c# c-sharp csharp      @shBrushCSharp.js",
+	  "css                    @shBrushCss.js",
+	  "delphi pascal          @shBrushDelphi.js",
+	  "diff patch pas         @shBrushDiff.js",
+	  "erl erlang             @shBrushErlang.js",
+	  "groovy                 @shBrushGroovy.js",
+	  "java                   @shBrushJava.js",
+	  "jfx javafx             @shBrushJavaFX.js",
+	  "js jscript javascript  @shBrushJScript.js",
+	  "perl pl                @shBrushPerl.js",
+	  "php                    @shBrushPhp.js",
+	  "text plain             @shBrushPlain.js",
+	  "py python              @shBrushPython.js",
+	  "ruby rails ror rb      @shBrushRuby.js",
+	  "sass scss              @shBrushSass.js",
+	  "scala                  @shBrushScala.js",
+	  "sql                    @shBrushSql.js",
+	  "vb vbnet               @shBrushVb.js",
+	  "xml xhtml xslt html    @shBrushXml.js"
+	));
+	SyntaxHighlighter.defaults["light"] = true;
+	SyntaxHighlighter.defaults["unindent"] = false;
+	SyntaxHighlighter.all();
+</script>
+	</body>
+</html>
