@@ -44,6 +44,7 @@ h1, h2, h3, h4, h5, h6 {
   background: #fff;
   border-color: transparent;
   color: #333;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
 }
 #jump_to:hover #jump_wrapper {
   display: block;
@@ -69,7 +70,7 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   display: none;
   background: #fff;
-  box-shadow: 0 20px 30px rgba(0,0,0,0.2);
+  box-shadow: 2px 5px 5px rgba(0,0,0,0.2);
   border-radius: 10px 0 10px 10px;
   z-index: 2;
   overflow: auto;
@@ -92,13 +93,18 @@ h1, h2, h3, h4, h5, h6 {
   background: #8e8eff;
   color: #fff;
 }
+table {
+  width: 100%;
+  table-layout: fixed;
+}
 table td {
   border: 0;
   outline: 0;
 }
   td.docs, th.docs {
-    max-width: 450px;
+    width: 450px;
     min-width: 450px;
+    max-width: 450px;
     min-height: 5px;
     padding: 10px 25px 1px 50px;
     overflow-x: hidden;
@@ -136,10 +142,27 @@ table td {
     vertical-align: top;
     background: #f5f5ff;
     border-left: 1px solid #e5e5ee;
+  }
+  .highlight {
+    overflow: auto;
     width: 100%;
   }
     pre, tt, code {
       font-size: 12px; line-height: 18px;
       font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
       margin: 0; padding: 0;
+      white-space: nowrap;
     }
+
+@media only screen and (max-width:900px) {
+  table, tbody, tr, td.docs, td.code {
+    display: block;
+    width: auto;
+    min-width: 0;
+    max-width: 1000px;
+  }
+
+  td.code {
+    padding: 10px 20px 16px;
+  }
+}
